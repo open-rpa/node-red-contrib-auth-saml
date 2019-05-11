@@ -104,18 +104,21 @@ class noderedcontribauthsaml {
                 profile.permissions = "*";
             }
         }
-        if (profile.permissions === undefined || profile.permissions === null) {
-            return done("Permission denied", null);
-        }
         profile.username = profile.nameID;
         if (this.customverify !== null && this.customverify !== undefined) {
             this.customverify(profile, (newprofile) => {
                 this._users[newprofile.nameID] = newprofile;
+                if (profile.permissions === undefined || profile.permissions === null) {
+                    return done("Permission denied", null);
+                }
                 done(null, newprofile);
             });
         }
         else {
             this._users[profile.nameID] = profile;
+            if (profile.permissions === undefined || profile.permissions === null) {
+                return done("Permission denied", null);
+            }
             done(null, profile);
         }
     }
