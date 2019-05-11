@@ -92,17 +92,20 @@ export class noderedcontribauthsaml {
             if(roles.indexOf("nodered_users")!==-1 || roles.indexOf("nodered users")!==-1) { profile.permissions = "read"; }
             if(roles.indexOf("nodered_admins")!==-1 || roles.indexOf("nodered admins")!==-1) { profile.permissions = "*"; }
         }
-        if(profile.permissions === undefined || profile.permissions === null) {
-            return done("Permission denied",null);
-        }
         profile.username = profile.nameID;
         if(this.customverify!==null && this.customverify!==undefined) {
             this.customverify(profile, (newprofile)=> {
                 this._users[newprofile.nameID] = newprofile;
+                if(profile.permissions === undefined || profile.permissions === null) {
+                    return done("Permission denied",null);
+                }
                 done(null,newprofile);
             });
         } else {
             this._users[profile.nameID] = profile;
+            if(profile.permissions === undefined || profile.permissions === null) {
+                return done("Permission denied",null);
+            }
             done(null,profile);
         }
     }
