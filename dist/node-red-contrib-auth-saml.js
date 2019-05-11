@@ -42,13 +42,20 @@ class noderedcontribauthsaml {
         this.authenticate = (this._authenticate).bind(this);
         this.users = (this.fn_users).bind(this);
     }
-    static async configure(baseURL, saml_federation_metadata, saml_ca, saml_crt) {
+    static async configure(baseURL, saml_federation_metadata, issuer, customverify, saml_ca, identityProviderUrl, saml_cert) {
         var result = new noderedcontribauthsaml(baseURL);
         if (saml_federation_metadata !== null && saml_federation_metadata !== undefined) {
             var metadata = await noderedcontribauthsaml.parse_federation_metadata(saml_ca, saml_federation_metadata);
             result.strategy.options.entryPoint = metadata.identityProviderUrl;
             result.strategy.options.cert = metadata.cert;
+            result.strategy.options.issuer = issuer;
         }
+        else {
+            result.strategy.options.entryPoint = identityProviderUrl;
+            result.strategy.options.cert = saml_cert;
+            result.strategy.options.issuer = issuer;
+        }
+        result.customverify = customverify;
         return result;
     }
     static async parse_federation_metadata(tls_ca, url) {
