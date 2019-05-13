@@ -49,7 +49,7 @@ export class noderedcontribauthsaml {
     }
     public static async parse_federation_metadata(tls_ca:String, url: string): Promise<any> {
         try {
-            if (tls_ca !== "") {
+            if (tls_ca !== null && tls_ca !== undefined && tls_ca !== "") {
                 var rootCas = require('ssl-root-cas/latest').create();
                 rootCas.push(tls_ca);
                 // rootCas.addFile( tls_ca );
