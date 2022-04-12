@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.noderedcontribauthsaml = exports.samlauthstrategy = exports.samlauthstrategyoptions = void 0;
 const SAMLStrategy = require("passport-saml");
 const passport_saml_metadata_1 = require("passport-saml-metadata");
 const https = require("https");
@@ -60,7 +61,7 @@ class noderedcontribauthsaml {
     }
     static async parse_federation_metadata(tls_ca, url) {
         try {
-            if (tls_ca !== "") {
+            if (tls_ca !== null && tls_ca !== undefined && tls_ca !== "") {
                 var rootCas = require('ssl-root-cas/latest').create();
                 rootCas.push(tls_ca);
                 // rootCas.addFile( tls_ca );
